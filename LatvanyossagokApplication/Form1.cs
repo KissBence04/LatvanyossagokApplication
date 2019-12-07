@@ -20,6 +20,7 @@ namespace LatvanyossagokApplication
 
             conn = new MySqlConnection("Server=localhost;Port=3306;Database=latvanyossagokdb;Uid=root;Pwd=;");
             conn.Open();
+            AdatokListazasa();
         }
 
         public void TablaLetrehoz()
@@ -29,6 +30,7 @@ namespace LatvanyossagokApplication
             cmd.ExecuteNonQuery();
             cmd.CommandText = @"CREATE TABLE IF NOT EXISTS latvanyossag (ID INTEGER AUTO_INCREMENT PRIMARY KEY, NEV VARCHAR(255) NOT NULL UNIQUE, LEIRAS VARCHAR(255) NOT NULL, AR INTEGER NOT NULL, VAROS_ID INTEGER FOREIGN KEY REFERENCES varosok(ID) NOT NULL)";
             cmd.ExecuteNonQuery();
+
         }
 
         private void btnVarosHozzaAd_Click(object sender, EventArgs e)
@@ -62,25 +64,39 @@ namespace LatvanyossagokApplication
                     string nev = reader.GetString("nev");
                     int lakossag = reader.GetInt32("lakossag");
 
-                    LBVarosok.Items.Add(nev+" - Lakosság:"+lakossag+" fő");
+                    LBVarosok.Items.Add(nev + " - Lakosság: " + lakossag + " fő");
                 }
             }
+        }
+
+        private void Kivalaszt()
+        {
+            string sor = LBVarosok.SelectedItem.ToString();
+            string[] sv = new string[5];
+            sv = sor.Split(' ');
+            //tbVnev.Text = sv[0].ToString();
+
         }
 
         private void btnTorles_Click(object sender, EventArgs e)
         {
             var cmd = conn.CreateCommand();
-            cmd.CommandText = @"DELETE FROM varosok WHERE id=@id";
-            //cmd.Parameters.AddWithValue('@id', LBVarosok.SelectedItem).Id;
-
+            cmd.CommandText = @"DELETE FROM varosok WHERE nev=@nev";
+            string sor= LBVarosok.SelectedItem.ToString();
+            string[] sv = new string[5];
+            sv = sor.Split(' ');
+            //Kivalaszt(sv);
+            
+            cmd.Parameters.AddWithValue("@nev", sv[0]);
             cmd.ExecuteNonQuery();
+            AdatokListazasa();
         }
 
         private void btnModosit_Click(object sender, EventArgs e)
         {
             var cmd = conn.CreateCommand();
             cmd.CommandText = @"UPDATE FROM varosok WHERE id=@id";
-            //cmd.Parameters.AddWithValue('@id', LBVarosok.SelectedItem).Id;
+            cmd.Parameters.AddWithValue("@id", LBVarosok.SelectedItem);
 
             cmd.ExecuteNonQuery();
         }
