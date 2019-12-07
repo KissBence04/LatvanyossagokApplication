@@ -20,6 +20,7 @@ namespace LatvanyossagokApplication
 
             conn = new MySqlConnection("Server=localhost;Port=3306;Database=latvanyossagokdb;Uid=root;Pwd=;");
             conn.Open();
+            AdatokListazas();
             AdatokListazasa();
         }
 
@@ -69,14 +70,6 @@ namespace LatvanyossagokApplication
             }
         }
 
-        private void Kivalaszt()
-        {
-            string sor = LBVarosok.SelectedItem.ToString();
-            string[] sv = new string[5];
-            sv = sor.Split(' ');
-            //tbVnev.Text = sv[0].ToString();
-
-        }
 
         private void btnTorles_Click(object sender, EventArgs e)
         {
@@ -85,8 +78,6 @@ namespace LatvanyossagokApplication
             string sor= LBVarosok.SelectedItem.ToString();
             string[] sv = new string[5];
             sv = sor.Split(' ');
-            //Kivalaszt(sv);
-            
             cmd.Parameters.AddWithValue("@nev", sv[0]);
             cmd.ExecuteNonQuery();
             AdatokListazasa();
@@ -95,10 +86,14 @@ namespace LatvanyossagokApplication
         private void btnModosit_Click(object sender, EventArgs e)
         {
             var cmd = conn.CreateCommand();
-            cmd.CommandText = @"UPDATE FROM varosok WHERE id=@id";
-            cmd.Parameters.AddWithValue("@id", LBVarosok.SelectedItem);
-
+            cmd.CommandText = @"UPDATE FROM varosok SET nev="+tbVnev.Text+", lakossag="+nUDLakossag.Value+" WHERE id=@id";
+            tbVnev.Text += LBVarosok.SelectedIndex.ToString();
+            nUDLakossag.Value += LBVarosok.SelectedIndex;
+            cmd.Parameters.AddWithValue("@id", "id");
+            cmd.Parameters.AddWithValue("@nev", "nev");
+            cmd.Parameters.AddWithValue("@lakossag", "lakossag");
             cmd.ExecuteNonQuery();
+            AdatokListazasa();
         }
 
         private void btnLatvanyossagHozzaAd_Click(object sender, EventArgs e)
@@ -110,14 +105,37 @@ namespace LatvanyossagokApplication
             }
 
             var cmd = conn.CreateCommand();
-            cmd.CommandText = @"INSERT INTO latvanyossag (nev, ar)
-                             VALUES (@nev,@ar)";
+            cmd.CommandText = @"INSERT INTO latvanyossag (nev,leiras,ar,varos_id)
+                             VALUES (@nev,@leiras,@ar,varos_id)";
             cmd.Parameters.AddWithValue("@nev", tBLNev.Text);
+            LBLeiras.Items.Add(tBLNev.Text+","+nUDAr.Value);
+            cmd.Parameters.AddWithValue("@leiras", LBLeiras.Text);
             cmd.Parameters.AddWithValue("@ar", nUDAr.Value);
+            AdatokListazas();
 
             cmd.ExecuteNonQuery();
         }
 
-        
+        public void AdatokListazas()
+        {
+            LBVarosok.Items.Clear();
+            var command = conn.CreateCommand();
+            command.CommandText = @"SELECT * FROM latvanyossag ORDER BY nev";
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    int id = reader.GetInt32("id");
+                    string nev = reader.GetString("nev");
+                    string leiras = reader.GetString("leiras");
+                    int ar = reader.GetInt32("ar");
+                    int v_id = reader.GetInt32("varos_id");
+
+                    LBLeiras.Items.Add("név:" + nev + " ár: " + ar);
+                }
+            }
+        }
+
+
     }
 }
