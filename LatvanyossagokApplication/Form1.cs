@@ -62,9 +62,27 @@ namespace LatvanyossagokApplication
                     string nev = reader.GetString("nev");
                     int lakossag = reader.GetInt32("lakossag");
 
-                    LBVarosok.Items.Add(nev+" - Lakosság:"+lakossag);
+                    LBVarosok.Items.Add(nev+" - Lakosság:"+lakossag+" fő");
                 }
             }
+        }
+
+        private void btnTorles_Click(object sender, EventArgs e)
+        {
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = @"DELETE FROM varosok WHERE id=@id";
+            //cmd.Parameters.AddWithValue('@id', LBVarosok.SelectedItem).Id;
+
+            cmd.ExecuteNonQuery();
+        }
+
+        private void btnModosit_Click(object sender, EventArgs e)
+        {
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = @"UPDATE FROM varosok WHERE id=@id";
+            //cmd.Parameters.AddWithValue('@id', LBVarosok.SelectedItem).Id;
+
+            cmd.ExecuteNonQuery();
         }
 
         private void btnLatvanyossagHozzaAd_Click(object sender, EventArgs e)
@@ -83,5 +101,7 @@ namespace LatvanyossagokApplication
 
             cmd.ExecuteNonQuery();
         }
+
+        
     }
 }

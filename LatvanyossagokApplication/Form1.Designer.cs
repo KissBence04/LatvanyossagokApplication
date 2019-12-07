@@ -41,6 +41,8 @@
             this.LBLeiras = new System.Windows.Forms.ListBox();
             this.btnLatvanyossagHozzaAd = new System.Windows.Forms.Button();
             this.LBVarosok = new System.Windows.Forms.ListBox();
+            this.btnTorles = new System.Windows.Forms.Button();
+            this.btnModosit = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nUDLakossag)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDAr)).BeginInit();
             this.SuspendLayout();
@@ -154,11 +156,33 @@
             this.LBVarosok.Size = new System.Drawing.Size(120, 95);
             this.LBVarosok.TabIndex = 12;
             // 
+            // btnTorles
+            // 
+            this.btnTorles.Location = new System.Drawing.Point(15, 333);
+            this.btnTorles.Name = "btnTorles";
+            this.btnTorles.Size = new System.Drawing.Size(92, 23);
+            this.btnTorles.TabIndex = 13;
+            this.btnTorles.Text = "Törlés";
+            this.btnTorles.UseVisualStyleBackColor = true;
+            this.btnTorles.Click += new System.EventHandler(this.btnTorles_Click);
+            // 
+            // btnModosit
+            // 
+            this.btnModosit.Location = new System.Drawing.Point(133, 333);
+            this.btnModosit.Name = "btnModosit";
+            this.btnModosit.Size = new System.Drawing.Size(75, 23);
+            this.btnModosit.TabIndex = 14;
+            this.btnModosit.Text = "Módosít";
+            this.btnModosit.UseVisualStyleBackColor = true;
+            this.btnModosit.Click += new System.EventHandler(this.btnModosit_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnModosit);
+            this.Controls.Add(this.btnTorles);
             this.Controls.Add(this.LBVarosok);
             this.Controls.Add(this.btnLatvanyossagHozzaAd);
             this.Controls.Add(this.LBLeiras);
@@ -196,6 +220,8 @@
         private System.Windows.Forms.ListBox LBLeiras;
         private System.Windows.Forms.Button btnLatvanyossagHozzaAd;
         private System.Windows.Forms.ListBox LBVarosok;
+        private System.Windows.Forms.Button btnTorles;
+        private System.Windows.Forms.Button btnModosit;
     }
 }
 
